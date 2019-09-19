@@ -32,12 +32,13 @@ button {
   padding: 1rem 2rem;
   margin: 0;
   text-decoration: none;
-  background: #414141;
-  color: #ffffff;
+  background: #935116;
+  color: black;
   font-family: inherit;
   font-size: 1.6rem;
   cursor: pointer;
   text-align: center;
+  border: 2px solid #6E2C00;
   transition: background 250ms ease-in-out, transform 150ms ease;
   -webkit-appearance: none;
   -moz-appearance: none;

@@ -8,6 +8,10 @@ function App() {
   //TODO: STEP 2 - Establish your applictaion's state with some useState hooks.  You'll need one for the home score and another for the away score.
   const [hScore, setHscore] = useState(0);
   const [aScore, setAscore] = useState(0);
+  const [hFoul, setHfoul] = useState(0);
+  const [aFoul, setAfoul] = useState(0);
+
+
   let min = 0;
   let max = 10;
   //functions for changing scores
@@ -39,6 +43,16 @@ function App() {
     let random = Math.floor(Math.random() * (max - min));
     random === 1 ? aCatchSnitch() : console.log(random + 'Snitch was not found');
   }
+
+  const incHFoul = () => {
+    setHfoul(hFoul + 1);
+  }
+
+  const incAFoul = () => {
+    setAfoul(aFoul + 1);
+  }
+
+  
   return (
     <div className="container">
       <section className="scoreboard">
@@ -56,7 +70,7 @@ function App() {
             <div className="away__score">{aScore}</div>
           </div>
         </div>
-        <BottomRow />
+        <BottomRow hFoul={hFoul} aFoul={aFoul} />
       </section>
       <section className="buttons">
         <div className="homeButtons">
@@ -67,6 +81,10 @@ function App() {
         <div className="awayButtons">
           <button className="awayButtons__touchdown" onClick={aGoal}>Slytherin Score Goal</button>
           <button className="awayButtons__fieldGoal" onClick={aLookSnitch}>Slytherin look for Snitch</button>
+        </div>
+        <div className="foulButtons">
+          <button className="awayButtons__touchdown" onClick={incHFoul}>Ravenclaw Foul</button>
+          <button className="awayButtons__fieldGoal" onClick={incAFoul}>Slytherin foul</button>
         </div>
       </section>
     </div>
