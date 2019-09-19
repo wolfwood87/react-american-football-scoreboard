@@ -8,6 +8,23 @@ function App() {
   //TODO: STEP 2 - Establish your applictaion's state with some useState hooks.  You'll need one for the home score and another for the away score.
   const [hScore, setHscore] = useState(0);
   const [aScore, setAscore] = useState(0);
+
+  //functions for changing scores
+  const hTouchdown = () => {
+    setHscore(hScore + 7);
+  }
+
+  const aTouchdown = () => {
+    setHscore(aScore + 7);
+  }
+
+  const hfield = () => {
+    setHscore(hScore + 3);
+  }
+
+  const afield = () => {
+    setHscore(aScore + 3);
+  }
   return (
     <div className="container">
       <section className="scoreboard">
