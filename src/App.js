@@ -1,6 +1,5 @@
 //TODO: STEP 1 - Import the useState hook.
-import React, { useState } from "react";
-import ReactDOM from 'react-dom';
+import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import BottomRow from "./BottomRow";
 
@@ -11,6 +10,65 @@ function App() {
   const [hFoul, setHfoul] = useState(0);
   const [aFoul, setAfoul] = useState(0);
   const [quart, setQuart] = useState(1);
+  const [sec, setSec] = useState(0);
+  const [minute, setMin] = useState(0);
+  const [hour, setHour] = useState(0);
+  const [day, setDay] = useState(0);
+  const interSec = useRef();
+  const interMin = useRef();
+  const interHour = useRef();
+  const interDay = useRef();
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const num2 = () => {sec>=59 ? setMin(minute + 1) : setMin(minute);};
+    const num3 = () => {
+      minute>=59 ? setHour(hour + 1) : setHour(hour);    
+    };
+    const num4 = () => {hour>=23 ? setDay(day + 1) : setDay(day);};
+    const num1 = setInterval(() => {sec>=59 ? setSec(0) : 
+      setSec(sec + 1);
+      setTick(tick + 1);  
+      num2();
+      num3();
+      num4();
+      console.log(tick); 
+    }, 1000);
+    interSec.current = num1;
+    interMin.current = num2;
+    interHour.current = num3;
+    interDay.current = num4;
+    return () => {
+      clearInterval(interSec.current);
+      clearInterval(interMin.current);
+      clearInterval(interHour.current);
+      clearInterval(interDay.current);
+    }
+  });
+
+  // useEffect(() => {
+  //   const num2 = setInterval(() => {minute>=59 ? setMin(0) :
+  //     setMin(minute + 1);
+  //   }, 1000);
+  //   interMin.current = num2;
+  //   return () => clearInterval(interMin.current);
+  // });
+
+  // useEffect(() => {
+  //   const num3 = setInterval(() => {hour>=23 ? setHour(0) :
+  //     setHour(hour + 1);
+  //   }, 3601000);
+  //   interHour.current = num3;
+  //   return () => clearInterval(interHour.current);
+  // });
+
+  // useEffect(() => {
+  //   const num4 = setInterval(() => {
+  //     setDay(day + 1);
+  //   }, 86401000);
+  //   interDay.current = num4;
+  //   return () => clearInterval(interDay.current);
+  // });
 
   let min = 0;
   let max = 10;
@@ -67,13 +125,13 @@ function App() {
 
             <div className="home__score">{hScore}</div>
           </div>
-          <div className="timer">00:00:00:03</div>
+          <div className="timer">{day} : {hour} : {minute} : {sec}</div>
           <div className="away">
             <h2 className="away__name">Slytherin</h2>
             <div className="away__score">{aScore}</div>
           </div>
         </div>
-        <BottomRow hFoul={hFoul} aFoul={aFoul} quart = {quart}/>
+        <BottomRow hFoul={hFoul} aFoul={aFoul} quart = {quart} />
       </section>
       <section className="buttons">
         <div className="homeButtons">
