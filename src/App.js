@@ -10,7 +10,7 @@ function App() {
   const [aScore, setAscore] = useState(0);
   const [hFoul, setHfoul] = useState(0);
   const [aFoul, setAfoul] = useState(0);
-
+  const [quart, setQuart] = useState(1);
 
   let min = 0;
   let max = 10;
@@ -52,6 +52,9 @@ function App() {
     setAfoul(aFoul + 1);
   }
 
+  const incQuart = () => {
+    setQuart(quart + 1);
+  }
   
   return (
     <div className="container">
@@ -70,7 +73,7 @@ function App() {
             <div className="away__score">{aScore}</div>
           </div>
         </div>
-        <BottomRow hFoul={hFoul} aFoul={aFoul} />
+        <BottomRow hFoul={hFoul} aFoul={aFoul} quart = {quart}/>
       </section>
       <section className="buttons">
         <div className="homeButtons">
@@ -83,10 +86,13 @@ function App() {
           <button className="awayButtons__fieldGoal" onClick={aLookSnitch}>Slytherin look for Snitch</button>
         </div>
         <div className="foulButtons">
-          <button className="awayButtons__touchdown" onClick={incHFoul}>Ravenclaw Foul</button>
-          <button className="awayButtons__fieldGoal" onClick={incAFoul}>Slytherin foul</button>
-        </div>
+          <button className="homeButtons__foul" onClick={incHFoul}>Ravenclaw Foul</button>
+          <button className="awayButtons__foul" onClick={incAFoul}>Slytherin foul</button>
+        </div>  
       </section>
+      <div className="quartButton">
+          <button className="awayButtons__touchdown" onClick={incQuart}>Next Quarter</button>
+        </div>
     </div>
   );
 }

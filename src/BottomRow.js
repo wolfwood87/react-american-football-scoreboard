@@ -11,7 +11,7 @@ const BottomRow = (props) => {
       </div>
       <div className="quarter">
         <h3 className="quarter__title">Quarter</h3>
-        <div className="quarter__value">4</div>
+        <div className="quarter__value">{props.quart}</div>
       </div>
       <div className="toGo">
         <h3 className="toGo__title">Away Fouls</h3>
