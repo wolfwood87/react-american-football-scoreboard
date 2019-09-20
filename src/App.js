@@ -15,37 +15,37 @@ function App() {
   const [hour, setHour] = useState(0);
   const [day, setDay] = useState(0);
   const interSec = useRef();
-  const interMin = useRef();
-  const interHour = useRef();
-  const interDay = useRef();
+  // const interMin = useRef();
+  // const interHour = useRef();
+  // const interDay = useRef();
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
-    const num2 = () => {sec>=59 ? setMin(minute + 1) : setMin(minute);};
-    const num3 = () => {
-      minute>=59 ? setHour(hour + 1) : setHour(hour);    
-    };
-    const num4 = () => {hour>=23 ? setDay(day + 1) : setDay(day);};
-    const num1 = setInterval(() => {sec>=59 ? setSec(0) : 
-      setSec(sec + 1);
-      setTick(tick + 1);  
-      num2();
-      num3();
-      num4();
+    
+   
+    const checkSec = () => {sec>=59 ? checkMin(): setSec(sec + 1);
+      sec>=59 ? setSec(0): setSec(sec + 1); 
+      ;};
+
+    const checkMin = () => {minute>=59 ? checkHour(): setMin(minute + 1);
+      minute>=59 ? setMin(0): setMin(minute + 1);};
+
+     const checkHour = () => {hour>=23 ? setDay(day + 1): setHour(hour + 1);
+      hour>=23 ? setHour(0): setHour(hour + 1);};
+
+    const num1 = setInterval(() => { 
+      checkSec();
       console.log(tick); 
     }, 1000);
     interSec.current = num1;
-    interMin.current = num2;
-    interHour.current = num3;
-    interDay.current = num4;
     return () => {
       clearInterval(interSec.current);
-      clearInterval(interMin.current);
-      clearInterval(interHour.current);
-      clearInterval(interDay.current);
+      
     }
   });
 
+
+  // first attempt at clock as a memorial for the attempt
   // useEffect(() => {
   //   const num2 = setInterval(() => {minute>=59 ? setMin(0) :
   //     setMin(minute + 1);
@@ -84,22 +84,22 @@ function App() {
 
   const hCatchSnitch = () => {
     setHscore(hScore + 150);
-    alert('Ravenclaw has won the Game!');
+    hScore>aScore ? alert('You caught the Snitch. Ravenclaw has won the Game!'): alert('You caught the Snitch but still lost the game!');
   }
 
   const aCatchSnitch = () => {
     setAscore(aScore + 150);
-    alert('Slytherin has won the Game!');
+    aScore>hScore ? alert('You caught the Snitch. Slytherin has won the Game!'): alert('You caught the Snitch but still lost the game!');
   }
 
   const hLookSnitch = () => {
     let random = Math.floor(Math.random() * (max - min));
-    random === 1 ? hCatchSnitch() : console.log(random + 'Snitch was not found');
+    random === 1 ? hCatchSnitch() : alert('Snitch was not found');
   }
 
   const aLookSnitch = () => {
     let random = Math.floor(Math.random() * (max - min));
-    random === 1 ? aCatchSnitch() : console.log(random + 'Snitch was not found');
+    random === 1 ? aCatchSnitch() : alert('Snitch was not found');
   }
 
   const incHFoul = () => {
@@ -125,7 +125,7 @@ function App() {
 
             <div className="home__score">{hScore}</div>
           </div>
-          <div className="timer">{day} : {hour} : {minute} : {sec}</div>
+          <div className="timer">{day.toLocaleString(undefined, {minimumIntegerDigits: 2})} : {hour.toLocaleString(undefined, {minimumIntegerDigits: 2})} : {minute.toLocaleString(undefined, {minimumIntegerDigits: 2})} : {sec.toLocaleString(undefined, {minimumIntegerDigits: 2})}</div>
           <div className="away">
             <h2 className="away__name">Slytherin</h2>
             <div className="away__score">{aScore}</div>
