@@ -15,13 +15,11 @@ function App() {
   const [hour, setHour] = useState(0);
   const [day, setDay] = useState(0);
   const interSec = useRef();
-  // const interMin = useRef();
-  // const interHour = useRef();
-  // const interDay = useRef();
-  const [tick, setTick] = useState(0);
+  
+ 
 
   useEffect(() => {
-    
+    //clock function. Increments seconds until 59 then adds minutes and resets. Same for minutes into hours and hours into days
    
     const checkSec = () => {sec>=59 ? checkMin(): setSec(sec + 1);
       sec>=59 ? setSec(0): setSec(sec + 1); 
@@ -35,7 +33,7 @@ function App() {
 
     const num1 = setInterval(() => { 
       checkSec();
-      console.log(tick); 
+    
     }, 1000);
     interSec.current = num1;
     return () => {
