@@ -1,41 +1,154 @@
 //TODO: STEP 1 - Import the useState hook.
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import BottomRow from "./BottomRow";
 
 function App() {
   //TODO: STEP 2 - Establish your applictaion's state with some useState hooks.  You'll need one for the home score and another for the away score.
+  const [hScore, setHscore] = useState(0);
+  const [aScore, setAscore] = useState(0);
+  const [hFoul, setHfoul] = useState(0);
+  const [aFoul, setAfoul] = useState(0);
+  const [quart, setQuart] = useState(1);
+  const [sec, setSec] = useState(0);
+  const [minute, setMin] = useState(0);
+  const [hour, setHour] = useState(0);
+  const [day, setDay] = useState(0);
+  const interSec = useRef();
+  
+ 
 
+  useEffect(() => {
+    //clock function. Increments seconds until 59 then adds minutes and resets. Same for minutes into hours and hours into days
+   
+    const checkSec = () => {sec>=59 ? checkMin(): setSec(sec + 1);
+      sec>=59 ? setSec(0): setSec(sec + 1); 
+      ;};
+
+    const checkMin = () => {minute>=59 ? checkHour(): setMin(minute + 1);
+      minute>=59 ? setMin(0): setMin(minute + 1);};
+
+     const checkHour = () => {hour>=23 ? setDay(day + 1): setHour(hour + 1);
+      hour>=23 ? setHour(0): setHour(hour + 1);};
+
+    const num1 = setInterval(() => { 
+      checkSec();
+    
+    }, 1000);
+    interSec.current = num1;
+    return () => {
+      clearInterval(interSec.current);
+      
+    }
+  });
+
+
+  // first attempt at clock as a memorial for the attempt
+  // useEffect(() => {
+  //   const num2 = setInterval(() => {minute>=59 ? setMin(0) :
+  //     setMin(minute + 1);
+  //   }, 1000);
+  //   interMin.current = num2;
+  //   return () => clearInterval(interMin.current);
+  // });
+
+  // useEffect(() => {
+  //   const num3 = setInterval(() => {hour>=23 ? setHour(0) :
+  //     setHour(hour + 1);
+  //   }, 3601000);
+  //   interHour.current = num3;
+  //   return () => clearInterval(interHour.current);
+  // });
+
+  // useEffect(() => {
+  //   const num4 = setInterval(() => {
+  //     setDay(day + 1);
+  //   }, 86401000);
+  //   interDay.current = num4;
+  //   return () => clearInterval(interDay.current);
+  // });
+
+  let min = 0;
+  let max = 10;
+  //functions for changing scores
+  
+  const hGoal = () => {
+    setHscore(hScore + 10);
+  }
+
+  const aGoal = () => {
+    setAscore(aScore + 10);
+  }
+
+  const hCatchSnitch = () => {
+    setHscore(hScore + 150);
+    hScore>aScore ? alert('You caught the Snitch. Ravenclaw has won the Game!'): alert('You caught the Snitch but still lost the game!');
+  }
+
+  const aCatchSnitch = () => {
+    setAscore(aScore + 150);
+    aScore>hScore ? alert('You caught the Snitch. Slytherin has won the Game!'): alert('You caught the Snitch but still lost the game!');
+  }
+
+  const hLookSnitch = () => {
+    let random = Math.floor(Math.random() * (max - min));
+    random === 1 ? hCatchSnitch() : alert('Snitch was not found');
+  }
+
+  const aLookSnitch = () => {
+    let random = Math.floor(Math.random() * (max - min));
+    random === 1 ? aCatchSnitch() : alert('Snitch was not found');
+  }
+
+  const incHFoul = () => {
+    setHfoul(hFoul + 1);
+  }
+
+  const incAFoul = () => {
+    setAfoul(aFoul + 1);
+  }
+
+  const incQuart = () => {
+    setQuart(quart + 1);
+  }
+  
   return (
     <div className="container">
       <section className="scoreboard">
         <div className="topRow">
           <div className="home">
-            <h2 className="home__name">Lions</h2>
+            <h2 className="home__name">Ravenclaw</h2>
 
             {/* TODO STEP 3 - We need to change the hardcoded values in these divs to accept dynamic values from our state. */}
 
-            <div className="home__score">32</div>
+            <div className="home__score">{hScore}</div>
           </div>
-          <div className="timer">00:03</div>
+          <div className="timer">{day.toLocaleString(undefined, {minimumIntegerDigits: 2})} : {hour.toLocaleString(undefined, {minimumIntegerDigits: 2})} : {minute.toLocaleString(undefined, {minimumIntegerDigits: 2})} : {sec.toLocaleString(undefined, {minimumIntegerDigits: 2})}</div>
           <div className="away">
-            <h2 className="away__name">Tigers</h2>
-            <div className="away__score">32</div>
+            <h2 className="away__name">Slytherin</h2>
+            <div className="away__score">{aScore}</div>
           </div>
         </div>
-        <BottomRow />
+        <BottomRow hFoul={hFoul} aFoul={aFoul} quart = {quart} />
       </section>
       <section className="buttons">
         <div className="homeButtons">
           {/* TODO STEP 4 - Now we need to attach our state setter functions to click listeners. */}
-          <button className="homeButtons__touchdown">Home Touchdown</button>
-          <button className="homeButtons__fieldGoal">Home Field Goal</button>
+          <button className="homeButtons__touchdown" onClick={hGoal}>Ravenclaw Score Goal</button>
+          <button className="homeButtons__fieldGoal" onClick={hLookSnitch}>Ravenclaw look for Snitch</button>
         </div>
         <div className="awayButtons">
-          <button className="awayButtons__touchdown">Away Touchdown</button>
-          <button className="awayButtons__fieldGoal">Away Field Goal</button>
+          <button className="awayButtons__touchdown" onClick={aGoal}>Slytherin Score Goal</button>
+          <button className="awayButtons__fieldGoal" onClick={aLookSnitch}>Slytherin look for Snitch</button>
         </div>
+        <div className="foulButtons">
+          <button className="homeButtons__foul" onClick={incHFoul}>Ravenclaw Foul</button>
+          <button className="awayButtons__foul" onClick={incAFoul}>Slytherin foul</button>
+        </div>  
       </section>
+      <div className="quartButton">
+          <button className="awayButtons__touchdown" onClick={incQuart}>Next Quarter</button>
+        </div>
     </div>
   );
 }
